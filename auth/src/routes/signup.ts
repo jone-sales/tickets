@@ -33,14 +33,13 @@ router.post(
         email: user.email
       },
        process.env.JWT_KEY!
-    );
+      );
 
       req.session = {
         jwt: userJwt
       };
 
       res.status(201).send(user);
-
-    }
-  );
+  }
+);
 export { router as signupRouter };
