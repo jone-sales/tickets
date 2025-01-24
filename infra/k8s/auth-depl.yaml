@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: js-dev/auth
+          image: jonesales/auth
           env:
             - name: JWT_KEY
               valueFrom:
