@@ -1,7 +1,7 @@
-import { sign } from 'jsonwebtoken';
 import { app } from '../../app';
 import request from 'supertest';
 import { Ticket } from '../../models/ticket';
+import { natsWrapper } from '../../nats-wrapper';
 
 it('has a route handler for POST resquests in /api/tickets', async () => {
     const response = await request(app).post('/api/tickets').send({});
@@ -81,3 +81,19 @@ it('creates a ticket with valid inputs', async () => {
     expect(tickets[0].title).toEqual(title);
     expect(tickets[0].price).toEqual(price);
 });
+
+it('publishes an event', async () => {
+    const title = "Test Title"
+    const price = 10;
+
+    await request(app)
+        .post('/api/tickets')
+        .set('Cookie', global.signin())
+        .send({
+            title,
+            price
+        })
+        .expect(201);
+    
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
+})
