@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-// creates an interface for Typescript detects User params.
+// creates an interface for Typescript detects Ticket params.
 interface TicketAttsr {
     title: string,
     price: number,
