@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 // creates an interface for Typescript detects Ticket params.
 interface TicketAttsr {
@@ -14,7 +15,9 @@ interface TicketDoc extends mongoose.Document {
     price: number,
     userId: string,
     createdAt: Date,
-    updatedAt: Date
+    updatedAt: Date,
+    version: number,
+    orderId?: string
 }
 
 interface TicketModel extends mongoose.Model<TicketDoc> {
@@ -34,6 +37,9 @@ const ticketSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+    orderId: {
+        type: String
+    }
 }, {
     toJSON: {
         transform(doc, ret) {
@@ -42,6 +48,9 @@ const ticketSchema = new mongoose.Schema({
         }
     }
 });
+
+ticketSchema.set('versionKey', 'version');
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 ticketSchema.statics.build = (attrs: TicketAttsr) => {
     return new Ticket(attrs);

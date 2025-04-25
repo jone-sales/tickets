@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { requireAuth, validateRequest, NotFoundError, UnauthorizedError } from '@js_tickets/common';
+import { requireAuth, validateRequest, NotFoundError, UnauthorizedError, BadRequestError } from '@js_tickets/common';
 import { Ticket } from '../models/ticket';
 import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher';
 import { natsWrapper } from '../nats-wrapper';
@@ -18,9 +18,13 @@ async (req: Request, res: Response) => {
         throw new NotFoundError();
     }
 
+    if(ticket.orderId) {
+      throw new BadRequestError('Cannot edit a reserved ticket.')
+    }
+
     if (ticket.userId !== req.currentUser!.id) {
         throw new UnauthorizedError();
-      }
+    }
     
     ticket.set({
         title: req.body.title,
@@ -32,7 +36,8 @@ async (req: Request, res: Response) => {
       id: ticket.id,
       title: ticket.title,
       userId: ticket.userId,
-      price: ticket.price
+      price: ticket.price,
+      version: ticket.version
     });
 
     res.send(ticket);

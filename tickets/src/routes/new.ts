@@ -27,7 +27,8 @@ async (req: Request, res: Response) => {
         id: ticket.id,
         title: ticket.title,
         userId: ticket.userId,
-        price: ticket.price
+        price: ticket.price,
+        version: ticket.version
     });
 
     res.status(201).send(ticket);
