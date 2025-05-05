@@ -14,5 +14,9 @@ export default () => {
     doRequest();
   }, []);
 
-  return <div>Signing you out...</div>;
+  return (
+    <div className="max-w-md mx-auto mt-8 bg-white p-8 rounded-lg shadow text-center">
+      <p className="text-gray-700">Signing you out...</p>
+    </div>
+  );
 };
