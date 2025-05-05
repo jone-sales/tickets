@@ -7,7 +7,6 @@ declare global {
     var signin: () => string[];
   }
 
-jest.useFakeTimers();
 jest.mock('../nats-wrapper');
 
 let mongo: any;
