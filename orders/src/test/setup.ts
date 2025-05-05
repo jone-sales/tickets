@@ -30,18 +30,12 @@ beforeEach(async () => {
     }
 });
 
-// afterAll(async () => {
-//     await mongoose.connection.close();
-//     if (mongo) {
-//         await mongo.stop();
-//     }
-// });
-
-afterAll(done => {
-    // Closing the DB connection allows Jest to exit successfully.
-    mongoose.connection.close()
-    done()
-  })
+afterAll(async () => {
+    await mongoose.connection.close();
+    if (mongo) {
+        await mongo.stop();
+    }
+});
 
 global.signin = () => {
     const payload = {
